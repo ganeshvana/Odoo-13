@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <report
+            string="Picking Operations - Custom"
+            id="action_picking_operation"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            name="oodu_krd_pick_report.report_picking_operation"
+            file="oodu_krd_pick_report.report_picking_operation"
+        />
+   
+    </data>
+</odoo>

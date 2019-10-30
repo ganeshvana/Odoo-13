@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="report_simple_barcode_extended">
+            <div style="width: 45%; display: inline-table; height:14rem;">
+                <table class="table table-bordered mb-0" style="">
+                    <tr>
+                        <th class="table-active text-center" style="height: 2rem; font-size: 20px;">
+                            <strong t-esc="product.company_id.name"/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold;">
+                            <div>PRODUCT : <span t-field="product.name"/></div>
+                            <div>STYLE NO  : <span t-field="product.default_code"/></div>
+                            <t t-foreach="product.product_template_attribute_value_ids" t-as="variant">
+                                <div>
+                                    <span t-esc="variant.attribute_id.name"/>    : 
+                                    <span t-esc="variant.product_attribute_value_id.name"/>
+                                </div>
+                            </t>
+                            <div>MRP : <span t-esc="product.lst_price"/></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center align-middle" style="height: 6rem;">
+                            <t t-if="product.barcode">
+                                <img alt="Barcode" t-if="len(product.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 600, 150)" style="width:100%;height:4rem;"/>
+                                <img alt="Barcode" t-elif="len(product.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', product.barcode, 600, 150)" style="width:100%;height:4rem;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 600, 150)" style="width:100%;height:4rem"/>
+                                <span t-field="product.barcode"/>
+                            </t>
+                            <t t-else=""><span class="text-muted">No barcode available</span></t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold; font-size: 12px;">
+                            <div>
+                                MANUFACTURING DATE : 
+                                <span t-esc="product.mfd"/>
+                            </div>
+                            <div>
+                                MFD &amp; MARKETED BY : 
+                                <span t-esc="product.company_id.name"/>
+                            </div>
+                            <div>
+                                <span t-field="product.company_id.partner_id"
+                                            t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+                            </div>
+                            <div style="font-weight:normal;">
+                                FEEDBACK/COMPLAINTS : 
+                                <span t-esc="product.company_id.email"/>
+                            </div>
+                            <div>
+                                TOLLFREE : <span t-esc="product.company_id.phone"/>
+                            </div>
+                            <div>
+                                WEB : <span t-esc="product.company_id.website"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_productbarcode_extended">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="product">
+                        <t t-call="product_barcode.report_simple_barcode_extended">
+                            <t t-set="product" t-value="product"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </template>
+        <template id="report_producttemplatebarcode_extended">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="template">
+                        <t t-foreach="template.product_variant_ids" t-as="product">
+                            <t t-call="product_barcode.report_simple_barcode_extended">
+                                <t t-set="product" t-value="product"/>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

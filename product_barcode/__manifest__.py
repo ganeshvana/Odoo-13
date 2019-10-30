@@ -29,9 +29,10 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
-    'depends': ['stock', 'product'],
+    'depends': ['stock', 'product', 'mrp'],
     'data': [
-        'views/product_label.xml',
+        'report/product_product_templates.xml',
+        'report/product_report.xml',
     ],
     'images': ['static/description/banner.png'],
     'license': 'AGPL-3',
